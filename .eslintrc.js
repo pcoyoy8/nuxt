@@ -2,10 +2,12 @@ module.exports = {
   env: {
     browser: true,
     es2021: true,
+    jest: true,
   },
   extends: [
-    'plugin:vue/essential',
+    'plugin:vue/recommended',
     'airbnb-base',
+    'eslint:recommended',
   ],
   parserOptions: {
     ecmaVersion: 12,
@@ -15,5 +17,6 @@ module.exports = {
     'vue',
   ],
   rules: {
+    'import/no-unresolved': 'off',
   },
 };
