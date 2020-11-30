@@ -1,5 +1,5 @@
 <template>
-  <v-form v-model="valid">
+  <v-form>
     <v-container>
       <v-row>
         <!--        Name-->
@@ -12,6 +12,7 @@
             :rules="nameRules"
             clearable
             label="First name"
+            prepend-icon="mdi-account"
             required
           />
         </v-col>
@@ -24,7 +25,6 @@
           <v-menu
             v-model="calendarMenu"
             :close-on-content-click="false"
-            :nudge-right="40"
             transition="scale-transition"
             offset-y
             min-width="290px"
@@ -59,6 +59,21 @@
           />
         </v-col>
       </v-row>
+      <v-row>
+        <v-col
+          md="12"
+          sm="12"
+        >
+          <v-btn
+            v-show="showJokeButton"
+            block
+            color="primary"
+            @click="onGetJoke"
+          >
+            Get joke
+          </v-btn>
+        </v-col>
+      </v-row>
     </v-container>
     <!--        Error-->
     <v-alert
@@ -84,40 +99,61 @@ export default {
         dob: null,
       },
       calendarMenu: false,
-      valid: false,
       nameRules: [
         (v) => !!v || 'Name is required',
       ],
       showError: false,
+      jokeText: '',
       errorMessage: null,
     };
   },
 
   computed: {
     greeting() {
-      const { person, dob } = this;
-      return `Welcome ${person.name}, you are ${dob} years old`;
+      const { person, age } = this;
+      let value = `Welcome ${person.name}`;
+      if (age >= 18) {
+        value += `, ahh! You are ${age} years old, so you can see a joke`;
+      }
+      return value;
     },
 
-    dob() {
+    age() {
       const { dob } = this.person;
       return moment().diff(dob, 'years');
     },
 
     showText() {
-      const { name, dob } = this.person;
-      return !!(name && dob);
+      const { name } = this.person;
+      return !!name;
+    },
+
+    showJokeButton() {
+      const { person, age } = this;
+      return person.name && age >= 18;
     },
   },
 
   methods: {
     onChangeDOB(value) {
+      this.showError = false;
       this.calendarMenu = false;
       const date = moment(value);
       this.person.dob = value;
       if (date.isSameOrAfter(moment())) {
         this.showError = true;
         this.errorMessage = 'Date of birth cannot be bigger than today';
+      }
+    },
+
+    async onGetJoke() {
+      try {
+        const { data } = await this.$axios.get('https://api.chucknorris.io/jokes/random');
+        this.jokeText = data.value;
+        // TODO: show joke
+      } catch (e) {
+        this.showError = true;
+        this.errorMessage = e.message;
       }
     },
   },

@@ -5,7 +5,7 @@ export default {
   // Global page headers (https://go.nuxtjs.dev/config-head)
   head: {
     titleTemplate: '%s - myapp',
-    title: 'myapp',
+    title: 'Vue Example',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
@@ -31,11 +31,11 @@ export default {
   buildModules: [
     // https://go.nuxtjs.dev/vuetify
     '@nuxtjs/vuetify',
-    '@nuxtjs/axios',
   ],
 
   // Modules (https://go.nuxtjs.dev/config-modules)
   modules: [
+    '@nuxtjs/axios',
   ],
 
   // Vuetify module configuration (https://go.nuxtjs.dev/config-vuetify)
