@@ -5,6 +5,7 @@
         <!--        Name-->
         <v-col
           md="12"
+          sm="12"
         >
           <v-text-field
             v-model="person.name"
@@ -18,6 +19,7 @@
         <!--        Date of birth-->
         <v-col
           md="12"
+          sm="12"
         >
           <v-menu
             v-model="calendarMenu"
@@ -39,8 +41,8 @@
               />
             </template>
             <v-date-picker
-              v-model="person.dob"
-              @input="calendarMenu = false"
+              :value="person.dob"
+              @input="onChangeDOB"
             />
           </v-menu>
         </v-col>
@@ -49,15 +51,23 @@
         <v-col
           v-show="showText"
           md="12"
+          sm="12"
         >
           <v-text-field
-            v-model="welcome"
+            v-model="greeting"
             :disabled="true"
-            required
           />
         </v-col>
       </v-row>
     </v-container>
+    <!--        Error-->
+    <v-alert
+      v-model="showError"
+      type="error"
+      dismissible
+    >
+      {{ errorMessage }}
+    </v-alert>
   </v-form>
 </template>
 
@@ -78,11 +88,13 @@ export default {
       nameRules: [
         (v) => !!v || 'Name is required',
       ],
+      showError: false,
+      errorMessage: null,
     };
   },
 
   computed: {
-    welcome() {
+    greeting() {
       const { person, dob } = this;
       return `Welcome ${person.name}, you are ${dob} years old`;
     },
@@ -95,6 +107,18 @@ export default {
     showText() {
       const { name, dob } = this.person;
       return !!(name && dob);
+    },
+  },
+
+  methods: {
+    onChangeDOB(value) {
+      this.calendarMenu = false;
+      const date = moment(value);
+      this.person.dob = value;
+      if (date.isSameOrAfter(moment())) {
+        this.showError = true;
+        this.errorMessage = 'Date of birth cannot be bigger than today';
+      }
     },
   },
 };
