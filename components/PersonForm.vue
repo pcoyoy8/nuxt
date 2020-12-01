@@ -64,6 +64,7 @@
           md="12"
           sm="12"
         >
+          <!--          Button get joke-->
           <v-btn
             v-show="showJokeButton"
             block
@@ -72,6 +73,19 @@
           >
             Get joke
           </v-btn>
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-col
+          md="12"
+          sm="12"
+        >
+          <!--          Joke text-->
+          <v-textarea
+            v-show="showJokeButton"
+            v-model="jokeText"
+            disabled
+          />
         </v-col>
       </v-row>
     </v-container>
@@ -150,7 +164,6 @@ export default {
       try {
         const { data } = await this.$axios.get('https://api.chucknorris.io/jokes/random');
         this.jokeText = data.value;
-        // TODO: show joke
       } catch (e) {
         this.showError = true;
         this.errorMessage = e.message;
