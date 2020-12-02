@@ -10,6 +10,7 @@
           <v-text-field
             v-model="person.name"
             :rules="nameRules"
+            data-test="name"
             clearable
             label="First name"
             prepend-icon="mdi-account"
@@ -32,6 +33,7 @@
             <template #activator="{ on, attrs }">
               <v-text-field
                 v-model="person.dob"
+                data-test="dob-field"
                 label="Date of birth"
                 prepend-icon="mdi-calendar"
                 readonly
@@ -41,6 +43,7 @@
               />
             </template>
             <v-date-picker
+              data-test="dob-picker"
               :value="person.dob"
               @input="onChangeDOB"
             />
@@ -55,6 +58,7 @@
         >
           <v-text-field
             v-model="greeting"
+            data-test="greeting"
             :disabled="true"
           />
         </v-col>
@@ -69,6 +73,7 @@
             v-show="showJokeButton"
             block
             color="primary"
+            data-test="joke-button"
             @click="onGetJoke"
           >
             Get joke
@@ -84,6 +89,7 @@
           <v-textarea
             v-show="showJokeButton"
             v-model="jokeText"
+            data-test="joke-text"
             disabled
           />
         </v-col>
@@ -94,6 +100,7 @@
       v-model="showError"
       type="error"
       dismissible
+      data-test="error"
     >
       {{ errorMessage }}
     </v-alert>
